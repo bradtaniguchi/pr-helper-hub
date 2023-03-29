@@ -1,5 +1,5 @@
 {
-  "name": "@nx-template/plugins",
+  "name": "@pr-helper-hub/plugins",
   "version": "0.0.1",
   "type": "commonjs",
   "generators": "generators.json"

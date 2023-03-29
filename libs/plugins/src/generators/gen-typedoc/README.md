@@ -3,5 +3,5 @@
 Run this generator with:
 
 ```bash
-nx generate @nx-template/plugins:gen-typedoc <project-name>
+nx generate @pr-helper-hub/plugins:gen-typedoc <project-name>
 ```

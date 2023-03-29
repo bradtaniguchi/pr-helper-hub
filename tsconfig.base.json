@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-template/common": ["libs/common/src/index.ts"],
-      "@nx-template/common-react": ["libs/common-react/src/index.ts"],
-      "@nx-template/plugins": ["libs/plugins/src/index.ts"],
-      "@nx-template/storybook": ["libs/storybook/src/index.ts"]
+      "@pr-helper-hub/common": ["libs/common/src/index.ts"],
+      "@pr-helper-hub/common-react": ["libs/common-react/src/index.ts"],
+      "@pr-helper-hub/plugins": ["libs/plugins/src/index.ts"],
+      "@pr-helper-hub/storybook": ["libs/storybook/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,4 +1,4 @@
-import { CommonLogger } from '@nx-template/common';
+import { CommonLogger } from '@pr-helper-hub/common';
 import { promises as fsPromises } from 'fs';
 import * as child_process from 'child_process';
 const { stat, mkdir } = fsPromises;

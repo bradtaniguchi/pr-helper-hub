@@ -8,7 +8,7 @@ import Document, {
   DocumentContext,
 } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
-import { GoogleAnalytics } from '@nx-template/common-react';
+import { GoogleAnalytics } from '@pr-helper-hub/common-react';
 
 export default class CustomDocument extends Document<{
   styleTags: ReactElement[];

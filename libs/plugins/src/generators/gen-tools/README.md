@@ -6,5 +6,5 @@ to manage scripts at the project level.
 Run this generator with:
 
 ```bash
-nx generate @nx-template/plugins:gen-tools <project-name>
+nx generate @pr-helper-hub/plugins:gen-tools <project-name>
 ```

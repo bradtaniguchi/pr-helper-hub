@@ -1,4 +1,4 @@
-import { BaseConfig, getProjectsByTarget } from '@nx-template/common-react';
+import { BaseConfig, getProjectsByTarget } from '@pr-helper-hub/common-react';
 import { GetStaticPropsResult } from 'next';
 import {
   DashboardPage,
