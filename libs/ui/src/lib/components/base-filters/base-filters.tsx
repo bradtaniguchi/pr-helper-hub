@@ -1,3 +1,5 @@
+import { Card } from 'flowbite-react';
+
 /* eslint-disable-next-line */
 export interface BaseFiltersProps {}
 
@@ -16,9 +18,9 @@ export interface BaseFiltersProps {}
  */
 export function BaseFilters(props: BaseFiltersProps) {
   return (
-    <div>
-      <h1>Welcome to BaseFilters!</h1>
-    </div>
+    <Card>
+      <h1>base-filters component</h1>
+    </Card>
   );
 }
 
