@@ -47,7 +47,17 @@ function App({ Component, pageProps }: AppProps) {
                   pr-helper-hub
                 </Link>
               </div>
-              <div className="dark:hover:text-white">
+              <div className="flex flex-row gap-5  dark:hover:text-white">
+                <div>
+                  <Link href="/" className="text-lg dark:text-white">
+                    Home
+                  </Link>
+                </div>
+                <div>
+                  <Link href="/about" className="text-lg dark:text-white">
+                    About
+                  </Link>
+                </div>
                 <Button
                   color={'white'}
                   outline={true}
