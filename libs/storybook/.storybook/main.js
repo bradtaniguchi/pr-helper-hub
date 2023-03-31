@@ -26,5 +26,9 @@ module.exports = {
       title: 'common-react',
       url: 'common-react/',
     },
+    ui: {
+      title: 'ui',
+      url: 'ui/',
+    },
   },
 };
