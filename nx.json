@@ -29,7 +29,8 @@
       },
       "component": {
         "style": "none",
-        "skipTests": true
+        "skipTests": true,
+        "export": true
       },
       "library": {
         "linter": "eslint",
