@@ -57,6 +57,7 @@
     "react-router-dom": "6.4.1",
     "react-use": "^17.4.0",
     "regenerator-runtime": "0.13.7",
+    "storybook-tailwind-dark-mode": "^1.0.15",
     "styled-components": "5.3.5",
     "tailwindcss": "3.1.8",
     "tslib": "^2.3.0",
