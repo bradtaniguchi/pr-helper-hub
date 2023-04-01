@@ -4,6 +4,13 @@ import { MainPage } from './main-page';
 const Story: ComponentMeta<typeof MainPage> = {
   component: MainPage,
   title: 'MainPage',
+  decorators: [
+    (Story) => (
+      <div className="h-screen">
+        <Story />
+      </div>
+    ),
+  ],
 };
 export default Story;
 

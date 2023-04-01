@@ -18,7 +18,7 @@ export interface BaseFiltersProps {}
  */
 export function BaseFilters(props: BaseFiltersProps) {
   return (
-    <Card>
+    <Card className="text-white">
       <h1>base-filters component</h1>
     </Card>
   );
