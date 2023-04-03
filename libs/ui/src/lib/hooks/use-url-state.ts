@@ -1,42 +1,99 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 /**
  * Primary hook to manage the url-state.
+ *
+ * @param params The initial state
+ * @param params.baseUrl The initial baseUrl
  */
-export function useUrlState() {
-  const [url, setUrl] = useState(new URL(''));
+export function useUrlState(params: { baseUrl: string }) {
+  const [{ baseUrl, query }, setState] = useState<{
+    baseUrl: string;
+    query: string;
+  }>({
+    baseUrl: params.baseUrl,
+    query: '',
+  });
 
-  const reset = useCallback(() => setUrl(new URL('')), []);
-
-  const setBaseUrl = useCallback(
-    // TODO: modify
-    (baseUrl: string) => setUrl(new URL(baseUrl)),
+  const reset = useCallback(
+    () =>
+      setState({
+        baseUrl: '',
+        query: '',
+      }),
     []
   );
 
-  const setQueryParam = useCallback((param: string, value: string) => {
-    setUrl((url) => {
-      url.searchParams.set(param, value);
-      return url;
-    });
+  const hasQueryParam = useCallback(
+    (param: string) => query.includes(param),
+    [query]
+  );
+
+  const addBaseFilter = useCallback(
+    (query: string) =>
+      // TODO: add validation
+      setState((state) => ({ ...state, query: state.query + '' + query })),
+    []
+  );
+
+  const removeBaseFilter = useCallback(
+    (query: string) =>
+      setState((state) => ({
+        ...state,
+        query: state.query.replace(query, ''),
+      })),
+    []
+  );
+
+  const addRepo = useCallback((repo: string) => {
+    // TODO: add validation
+    setState((state) => ({ ...state, query: `${state.query} repo:${repo}` }));
   }, []);
+
+  const removeRepo = useCallback(
+    () =>
+      setState((state) => ({
+        ...state,
+        query: state.query.replace(/repo:[^ ]+/, ''),
+      })),
+    []
+  );
+
+  const url = useMemo(() => {
+    const url = new URL(baseUrl);
+    url.searchParams.set('q', query);
+    return url;
+  }, [baseUrl, query]);
 
   return {
     /**
-     * The actual raw URL as a string
+     * The URL object that can be shown to the user
      */
-    url: url.toString(),
+    url,
     /**
      * Reset the state to its initial value.
      */
     reset,
     /**
-     * Set the base URL, e.g. https://github.com
+     * If the query-param is present in the URL
      */
-    setBaseUrl,
+    hasQueryParam,
     /**
-     *
+     * Add a base filter to the query
      */
-    setQueryParam,
+    addBaseFilter,
+    /**
+     * Add a repo to the query
+     */
+    addRepo,
+    /**
+     * Removes the given repo from the query
+     */
+    removeRepo,
+    /**
+     * Removes the base filter
+     * **note** this will remove the given repo if it matches!
+     */
+    removeBaseFilter,
   };
 }
