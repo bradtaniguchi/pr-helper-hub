@@ -1,26 +1,33 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 /**
- * Primary hook to manage the url-state.
+ * Primary hook to manage the URL state for the pull request page.
  *
  * @param params The initial state
  * @param params.baseUrl The initial baseUrl
  */
-export function useUrlState(params: { baseUrl: string }) {
+export function usePullUrlState(params: { baseUrl: string }) {
   const [{ baseUrl, query }, setState] = useState<{
     baseUrl: string;
-    query: string;
+    query: Array<string>;
   }>({
     baseUrl: params.baseUrl,
-    query: '',
+    query: [],
   });
 
   const reset = useCallback(
     () =>
       setState({
         baseUrl: '',
-        query: '',
+        query: [],
       }),
+    []
+  );
+
+  const setBaseUrl = useCallback(
+    (baseUrl: string) =>
+      // TODO: validate
+      setState((state) => ({ ...state, baseUrl })),
     []
   );
 
@@ -32,7 +39,7 @@ export function useUrlState(params: { baseUrl: string }) {
   const addBaseFilter = useCallback(
     (query: string) =>
       // TODO: add validation
-      setState((state) => ({ ...state, query: state.query + '' + query })),
+      setState((state) => ({ ...state, query: [...state.query, query] })),
     []
   );
 
@@ -40,30 +47,36 @@ export function useUrlState(params: { baseUrl: string }) {
     (query: string) =>
       setState((state) => ({
         ...state,
-        query: state.query.replace(query, ''),
+        query: state.query.filter((el) => el !== query),
       })),
     []
   );
 
   const addRepo = useCallback((repo: string) => {
     // TODO: add validation
-    setState((state) => ({ ...state, query: `${state.query} repo:${repo}` }));
+    setState((state) => ({
+      ...state,
+      query: [...state.query, `repo:${repo}`],
+    }));
   }, []);
 
   const removeRepo = useCallback(
-    () =>
+    (repo: string) =>
       setState((state) => ({
         ...state,
-        query: state.query.replace(/repo:[^ ]+/, ''),
+        query: state.query.filter((el) => el !== `repo:${repo}`),
       })),
     []
   );
 
-  const url = useMemo(() => {
+  const url = (() => {
     const url = new URL(baseUrl);
-    url.searchParams.set('q', query);
-    return url;
-  }, [baseUrl, query]);
+    url.pathname += 'pulls';
+
+    if (query.length) url.searchParams.set('q', query.join(' '));
+
+    return url.toString();
+  })();
 
   return {
     /**
@@ -74,6 +87,10 @@ export function useUrlState(params: { baseUrl: string }) {
      * Reset the state to its initial value.
      */
     reset,
+    /**
+     * Sets the base-url for the query
+     */
+    setBaseUrl,
     /**
      * If the query-param is present in the URL
      */
