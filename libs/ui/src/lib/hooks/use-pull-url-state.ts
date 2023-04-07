@@ -36,7 +36,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
 
   const addBaseFilter = useCallback(
     (query: BaseFilter) =>
-      setState((state) => ({ ...state, repos: [...state.repos, query] })),
+      setState((state) => ({
+        ...state,
+        baseFilters: [...state.baseFilters, query],
+      })),
     []
   );
 
@@ -51,6 +54,23 @@ export function usePullUrlState(params: { baseUrl: string }) {
 
   const hasBaseFilter = useCallback(
     (filter: BaseFilter) => baseFilters.includes(filter),
+    [baseFilters]
+  );
+
+  const moveBaseFilter = useCallback(
+    (filter: BaseFilter, newIndex: number) => {
+      if (newIndex < 0 || newIndex > baseFilters.length)
+        throw new Error(`Invalid index: ${newIndex}`);
+
+      setState((state) => ({
+        ...state,
+        baseFilters: [
+          ...baseFilters.slice(0, newIndex),
+          filter,
+          ...baseFilters.slice(newIndex),
+        ],
+      }));
+    },
     [baseFilters]
   );
 
@@ -122,6 +142,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
      * **note** this will remove the given repo if it matches!
      */
     removeBaseFilter,
+    /**
+     * Moves the given base filter to the new index
+     */
+    moveBaseFilter,
     /**
      * Returns if the given base filter is in already in the query
      */

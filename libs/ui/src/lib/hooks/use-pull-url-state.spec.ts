@@ -16,6 +16,7 @@ describe('usePullUrlState', () => {
       addBaseFilter: expect.any(Function),
       removeBaseFilter: expect.any(Function),
       hasBaseFilter: expect.any(Function),
+      moveBaseFilter: expect.any(Function),
 
       addRepo: expect.any(Function),
       removeRepo: expect.any(Function),
@@ -40,6 +41,37 @@ describe('usePullUrlState', () => {
       result.current.addBaseFilter('is:pr');
     });
     expect(result.current.url).toEqual('https://github.com/pulls?q=is%3Apr');
+  });
+  test('returns url with updated base-filter after moveBaseFilter', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+    act(() => {
+      result.current.addBaseFilter('is:pr');
+      result.current.addBaseFilter('is:open');
+    });
+    act(() => {
+      result.current.moveBaseFilter('is:pr', 1);
+    });
+    expect(result.current.url).toEqual(
+      'https://github.com/pulls?q=is%3Apr+is%3Apr+is%3Aopen'
+    );
+  });
+  test('throws error trying to move base-filter to invalid index', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+    act(() => {
+      result.current.addBaseFilter('is:pr');
+      result.current.addBaseFilter('is:open');
+    });
+    expect(() =>
+      act(() => {
+        result.current.moveBaseFilter('is:pr', 3);
+      })
+    ).toThrowError('Invalid index: 3');
+
+    expect(() =>
+      act(() => {
+        result.current.moveBaseFilter('is:pr', -1);
+      })
+    ).toThrowError('Invalid index: -1');
   });
   test('returns url with multiple base-filters', async () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));
