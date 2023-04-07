@@ -8,13 +8,23 @@ describe('usePullUrlState', () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));
     expect(result.current).toEqual({
       url: 'https://github.com/pulls',
+      isValidUrl: true,
       reset: expect.any(Function),
+
       setBaseUrl: expect.any(Function),
+
       addBaseFilter: expect.any(Function),
+      removeBaseFilter: expect.any(Function),
+      hasBaseFilter: expect.any(Function),
+
       addRepo: expect.any(Function),
       removeRepo: expect.any(Function),
-      removeBaseFilter: expect.any(Function),
+      hasRepo: expect.any(Function),
     });
+  });
+  test('returns nothing if given invalid base-url', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl: 'foo' }));
+    expect(result.current.url).toEqual('');
   });
   test('returns url with updated base-url', () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));

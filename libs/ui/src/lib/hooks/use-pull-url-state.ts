@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { BaseFilter } from '../constants';
+import { isValidRepo, isValidUrl as isValidUrlFunc } from '../utils';
 
 /**
  * Primary hook to manage the URL state for the pull request page.
@@ -29,15 +30,12 @@ export function usePullUrlState(params: { baseUrl: string }) {
   );
 
   const setBaseUrl = useCallback(
-    (baseUrl: string) =>
-      // TODO: validate
-      setState((state) => ({ ...state, baseUrl })),
+    (baseUrl: string) => setState((state) => ({ ...state, baseUrl })),
     []
   );
 
   const addBaseFilter = useCallback(
     (query: BaseFilter) =>
-      // TODO: add validation
       setState((state) => ({ ...state, repos: [...state.repos, query] })),
     []
   );
@@ -57,7 +55,9 @@ export function usePullUrlState(params: { baseUrl: string }) {
   );
 
   const addRepo = useCallback((repo: string) => {
-    // TODO: add validation
+    if (!isValidRepo(repo)) {
+      throw new Error(`Invalid repo: ${repo}`);
+    }
     setState((state) => ({
       ...state,
       repos: [...state.repos, `repo:${repo}`],
@@ -79,6 +79,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
   );
 
   const url = (() => {
+    if (!isValidUrlFunc(baseUrl)) return '';
     const url = new URL(baseUrl);
     url.pathname += 'pulls';
 
@@ -88,17 +89,28 @@ export function usePullUrlState(params: { baseUrl: string }) {
     return url.toString();
   })();
 
+  const isValidUrl = (() => {
+    return isValidUrlFunc(url);
+  })();
+
   return {
     /**
      * The URL string for the pull request page
      */
     url,
     /**
+     * Returns if the url is valid. When a URL is invalid, then
+     * `url` will return an empty string.
+     */
+    isValidUrl,
+    /**
      * Reset the state to its initial value.
      */
     reset,
     /**
-     * Sets the base-url for the query
+     * Sets the base-url for the query.
+     *
+     * @returns if the url was valid
      */
     setBaseUrl,
     /**
@@ -115,7 +127,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     hasBaseFilter,
     /**
-     * Add a repo to the query
+     * Add a repo to the query. Will throw an error if the repo name format is invalid.
      */
     addRepo,
     /**
