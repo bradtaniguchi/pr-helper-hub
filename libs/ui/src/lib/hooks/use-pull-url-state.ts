@@ -5,6 +5,8 @@ import { isValidRepo, isValidUrl as isValidUrlFunc } from '../utils';
 /**
  * Primary hook to manage the URL state for the pull request page.
  *
+ * TODO: add custom filter
+ *
  * @param params The initial state
  * @param params.baseUrl The initial baseUrl
  */
@@ -35,19 +37,19 @@ export function usePullUrlState(params: { baseUrl: string }) {
   );
 
   const addBaseFilter = useCallback(
-    (query: BaseFilter) =>
+    (filter: BaseFilter) =>
       setState((state) => ({
         ...state,
-        baseFilters: [...state.baseFilters, query],
+        baseFilters: [...state.baseFilters, filter],
       })),
     []
   );
 
   const removeBaseFilter = useCallback(
-    (query: string) =>
+    (filter: string) =>
       setState((state) => ({
         ...state,
-        repos: state.repos.filter((el) => el !== query),
+        baseFilters: state.baseFilters.filter((el) => el !== filter),
       })),
     []
   );
@@ -55,6 +57,17 @@ export function usePullUrlState(params: { baseUrl: string }) {
   const hasBaseFilter = useCallback(
     (filter: BaseFilter) => baseFilters.includes(filter),
     [baseFilters]
+  );
+
+  const toggleBaseFilter = useCallback(
+    (filter: BaseFilter) => {
+      if (hasBaseFilter(filter)) {
+        removeBaseFilter(filter);
+      } else {
+        addBaseFilter(filter);
+      }
+    },
+    [addBaseFilter, hasBaseFilter, removeBaseFilter]
   );
 
   const moveBaseFilter = useCallback(
@@ -157,6 +170,12 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     setBaseUrl,
     /**
+     * The currently selected baseFilters.
+     *
+     * Frozen as to not manipulate elsewhere.
+     */
+    baseFilters: (() => Object.freeze(baseFilters) as Array<BaseFilter>)(),
+    /**
      * Add a base filter to the query
      */
     addBaseFilter,
@@ -166,6 +185,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     removeBaseFilter,
     /**
+     * Toggles the given base filter
+     */
+    toggleBaseFilter,
+    /**
      * Moves the given base filter to the new index
      */
     moveBaseFilter,
@@ -173,6 +196,12 @@ export function usePullUrlState(params: { baseUrl: string }) {
      * Returns if the given base filter is in already in the query
      */
     hasBaseFilter,
+    /**
+     * The currently selected repos.
+     *
+     * Frozen as to not manipulate elsewhere.
+     */
+    repos: (() => Object.freeze(repos))(),
     /**
      * Add a repo to the query. Will throw an error if the repo name format is invalid.
      */

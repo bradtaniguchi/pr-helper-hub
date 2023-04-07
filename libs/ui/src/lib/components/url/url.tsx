@@ -1,7 +1,17 @@
 import { Card } from 'flowbite-react';
+import Link from 'next/link';
 
 /* eslint-disable-next-line */
-export interface UrlProps {}
+export interface UrlProps {
+  /**
+   * The URL to display
+   */
+  url: string;
+  /**
+   * Array of actions to show in the bottom right of the card
+   */
+  actions?: Array<React.ReactNode>;
+}
 
 /**
  * The Url component is shown at the top of the page, and contains
@@ -10,12 +20,28 @@ export interface UrlProps {}
  * **note** we will need way to support prefix-urls/base-urls to support enterprise
  * github users.
  *
+ * TODO: might include a field to name a URL when save is clicked.
+ *
  * @param props the component props
  */
 export function Url(props: UrlProps) {
+  const { url, actions } = props;
   return (
     <Card className="text-white">
-      <h1>url component</h1>
+      <div className="flex justify-center underline">
+        {/* TODO: style differently later */}
+        <Link href={url}>{url}</Link>
+      </div>
+
+      {actions && (
+        <div className="flex justify-end">
+          {actions.map((action, index) => (
+            <div key={index} className="ml-2">
+              {action}
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 }
