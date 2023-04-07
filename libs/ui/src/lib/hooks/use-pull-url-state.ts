@@ -62,7 +62,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
       if (newIndex < 0 || newIndex > baseFilters.length)
         throw new Error(`Invalid index: ${newIndex}`);
 
-      if (!hasBaseFilter(filter))
+      if (!baseFilters.includes(filter))
         throw new Error(`Filter not found: ${filter}`);
 
       setState((state) => ({
