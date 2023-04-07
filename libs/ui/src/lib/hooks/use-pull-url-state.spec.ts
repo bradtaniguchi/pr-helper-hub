@@ -21,6 +21,7 @@ describe('usePullUrlState', () => {
       addRepo: expect.any(Function),
       removeRepo: expect.any(Function),
       hasRepo: expect.any(Function),
+      moveRepo: expect.any(Function),
     });
   });
   test('returns nothing if given invalid base-url', () => {
@@ -73,6 +74,18 @@ describe('usePullUrlState', () => {
       })
     ).toThrowError('Invalid index: -1');
   });
+  test('throws error trying to move base-filter that does not exist', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+    act(() => {
+      result.current.addBaseFilter('is:pr');
+      result.current.addBaseFilter('is:open');
+    });
+    expect(() =>
+      act(() => {
+        result.current.moveBaseFilter('is:closed', 1);
+      })
+    ).toThrowError('Filter not found: is:closed');
+  });
   test('returns url with multiple base-filters', async () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));
     act(() => {
@@ -84,7 +97,7 @@ describe('usePullUrlState', () => {
     );
   });
 
-  test('returns url with repo query param', async () => {
+  test('returns url with repo', async () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));
     act(() => {
       result.current.addRepo('nrwl/nx');
@@ -92,6 +105,37 @@ describe('usePullUrlState', () => {
     expect(result.current.url).toEqual(
       'https://github.com/pulls?q=repo%3Anrwl%2Fnx'
     );
+  });
+  test('returns url with updated repo after moveRepo', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+    act(() => {
+      result.current.addRepo('nrwl/nx');
+      result.current.addRepo('nrwl/nx-examples');
+    });
+    act(() => {
+      result.current.moveRepo('nrwl/nx', 1);
+    });
+    expect(result.current.url).toEqual(
+      'https://github.com/pulls?q=repo%3Anrwl%2Fnx+repo%3Anrwl%2Fnx+repo%3Anrwl%2Fnx-examples'
+    );
+  });
+  test('throws error trying to move repo to invalid index', () => {
+    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+    act(() => {
+      result.current.addRepo('nrwl/nx');
+      result.current.addRepo('nrwl/nx-examples');
+    });
+    expect(() =>
+      act(() => {
+        result.current.moveRepo('nrwl/nx', 3);
+      })
+    ).toThrowError('Invalid index: 3');
+
+    expect(() =>
+      act(() => {
+        result.current.moveRepo('nrwl/nx', -1);
+      })
+    ).toThrowError('Invalid index: -1');
   });
   test('returns url with base-filters and multiple repos', () => {
     const { result } = renderHook(() => usePullUrlState({ baseUrl }));

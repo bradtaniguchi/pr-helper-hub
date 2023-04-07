@@ -62,6 +62,9 @@ export function usePullUrlState(params: { baseUrl: string }) {
       if (newIndex < 0 || newIndex > baseFilters.length)
         throw new Error(`Invalid index: ${newIndex}`);
 
+      if (!hasBaseFilter(filter))
+        throw new Error(`Filter not found: ${filter}`);
+
       setState((state) => ({
         ...state,
         baseFilters: [
@@ -95,6 +98,26 @@ export function usePullUrlState(params: { baseUrl: string }) {
 
   const hasRepo = useCallback(
     (repo: string) => repos.includes(`repo:${repo}`),
+    [repos]
+  );
+
+  const moveRepo = useCallback(
+    (repo: string, newIndex: number) => {
+      if (newIndex < 0 || newIndex > repos.length)
+        throw new Error(`Invalid index: ${newIndex}`);
+
+      if (!repos.includes(`repo:${repo}`))
+        throw new Error(`Repo not found: ${repo}`);
+
+      setState((state) => ({
+        ...state,
+        repos: [
+          ...repos.slice(0, newIndex),
+          `repo:${repo}`,
+          ...repos.slice(newIndex),
+        ],
+      }));
+    },
     [repos]
   );
 
@@ -162,5 +185,9 @@ export function usePullUrlState(params: { baseUrl: string }) {
      * Returns if the given repo is in already in the query
      */
     hasRepo,
+    /**
+     * Moves the given repo to the new index
+     */
+    moveRepo,
   };
 }
