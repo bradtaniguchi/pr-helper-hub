@@ -10,7 +10,6 @@ describe('usePullUrlState', () => {
       url: 'https://github.com/pulls',
       reset: expect.any(Function),
       setBaseUrl: expect.any(Function),
-      hasQueryParam: expect.any(Function),
       addBaseFilter: expect.any(Function),
       addRepo: expect.any(Function),
       removeRepo: expect.any(Function),

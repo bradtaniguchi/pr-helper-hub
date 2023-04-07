@@ -25,4 +25,14 @@ export type BaseFilter = typeof BASE_FILTERS[number];
  */
 export const DEFAULT_BASE_FILTERS: BaseFilter[] = ['is:open', 'is:pr'];
 
-// TODO: add "converse" mapping. E.g. is:open -> is:closed
+/**
+ * A mapping of base-filters to their converse counterparts.
+ *
+ * TODO: need to verify
+ */
+export const CONVERSE_MAPPING = {
+  'is:open': 'is:closed',
+  'is:closed': 'is:open',
+  'is:merged': 'is:unmerged',
+  'is:unmerged': 'is:merged',
+};

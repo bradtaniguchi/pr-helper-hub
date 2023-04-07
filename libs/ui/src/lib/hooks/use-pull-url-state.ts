@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { BaseFilter } from '../constants';
 
 /**
  * Primary hook to manage the URL state for the pull request page.
@@ -7,19 +8,22 @@ import { useCallback, useState } from 'react';
  * @param params.baseUrl The initial baseUrl
  */
 export function usePullUrlState(params: { baseUrl: string }) {
-  const [{ baseUrl, query }, setState] = useState<{
+  const [{ baseUrl, baseFilters, repos }, setState] = useState<{
     baseUrl: string;
-    query: Array<string>;
+    baseFilters: BaseFilter[];
+    repos: Array<string>;
   }>({
     baseUrl: params.baseUrl,
-    query: [],
+    baseFilters: [],
+    repos: [],
   });
 
   const reset = useCallback(
     () =>
       setState({
         baseUrl: '',
-        query: [],
+        baseFilters: [],
+        repos: [],
       }),
     []
   );
@@ -31,15 +35,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
     []
   );
 
-  const hasQueryParam = useCallback(
-    (param: string) => query.includes(param),
-    [query]
-  );
-
   const addBaseFilter = useCallback(
-    (query: string) =>
+    (query: BaseFilter) =>
       // TODO: add validation
-      setState((state) => ({ ...state, query: [...state.query, query] })),
+      setState((state) => ({ ...state, repos: [...state.repos, query] })),
     []
   );
 
@@ -47,16 +46,21 @@ export function usePullUrlState(params: { baseUrl: string }) {
     (query: string) =>
       setState((state) => ({
         ...state,
-        query: state.query.filter((el) => el !== query),
+        repos: state.repos.filter((el) => el !== query),
       })),
     []
+  );
+
+  const hasBaseFilter = useCallback(
+    (filter: BaseFilter) => baseFilters.includes(filter),
+    [baseFilters]
   );
 
   const addRepo = useCallback((repo: string) => {
     // TODO: add validation
     setState((state) => ({
       ...state,
-      query: [...state.query, `repo:${repo}`],
+      repos: [...state.repos, `repo:${repo}`],
     }));
   }, []);
 
@@ -64,23 +68,29 @@ export function usePullUrlState(params: { baseUrl: string }) {
     (repo: string) =>
       setState((state) => ({
         ...state,
-        query: state.query.filter((el) => el !== `repo:${repo}`),
+        repos: state.repos.filter((el) => el !== `repo:${repo}`),
       })),
     []
+  );
+
+  const hasRepo = useCallback(
+    (repo: string) => repos.includes(`repo:${repo}`),
+    [repos]
   );
 
   const url = (() => {
     const url = new URL(baseUrl);
     url.pathname += 'pulls';
 
-    if (query.length) url.searchParams.set('q', query.join(' '));
+    if (repos.length || baseFilters.length)
+      url.searchParams.set('q', [...baseFilters, ...repos].join(' '));
 
     return url.toString();
   })();
 
   return {
     /**
-     * The URL object that can be shown to the user
+     * The URL string for the pull request page
      */
     url,
     /**
@@ -92,13 +102,18 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     setBaseUrl,
     /**
-     * If the query-param is present in the URL
-     */
-    hasQueryParam,
-    /**
      * Add a base filter to the query
      */
     addBaseFilter,
+    /**
+     * Removes the base filter
+     * **note** this will remove the given repo if it matches!
+     */
+    removeBaseFilter,
+    /**
+     * Returns if the given base filter is in already in the query
+     */
+    hasBaseFilter,
     /**
      * Add a repo to the query
      */
@@ -108,9 +123,8 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     removeRepo,
     /**
-     * Removes the base filter
-     * **note** this will remove the given repo if it matches!
+     * Returns if the given repo is in already in the query
      */
-    removeBaseFilter,
+    hasRepo,
   };
 }
