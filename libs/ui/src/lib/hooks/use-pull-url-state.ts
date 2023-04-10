@@ -160,6 +160,12 @@ export function usePullUrlState(params: { baseUrl: string }) {
     if (repos.length || baseFilters.length)
       url.searchParams.set('q', [...baseFilters, ...repos].join(' '));
 
+    if (customFilter)
+      url.searchParams.set(
+        'q',
+        [url.searchParams.get('q'), customFilter].filter(Boolean).join(' ')
+      );
+
     return url.toString();
   })();
 

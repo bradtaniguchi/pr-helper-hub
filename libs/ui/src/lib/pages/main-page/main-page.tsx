@@ -13,7 +13,7 @@ export interface MainPageProps {}
  * @param props the props of the component
  */
 export function MainPage(props: MainPageProps) {
-  const { url, baseFilters, ...functions } = usePullUrlState({
+  const { url, baseFilters, isValidUrl, ...functions } = usePullUrlState({
     baseUrl: 'https://github.com/',
   });
   return (
@@ -21,6 +21,7 @@ export function MainPage(props: MainPageProps) {
       <div className="col-span-5 row-span-1">
         <Url
           url={url}
+          isValidUrl={isValidUrl}
           actions={[
             // TODO: add display logic
             <Button key="1">Delete</Button>,
