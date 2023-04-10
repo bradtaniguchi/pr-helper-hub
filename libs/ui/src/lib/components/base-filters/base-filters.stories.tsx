@@ -3,7 +3,7 @@ import { BaseFilters } from './base-filters';
 
 const Story: ComponentMeta<typeof BaseFilters> = {
   component: BaseFilters,
-  title: 'BaseFilters',
+  title: 'components/BaseFilters',
 };
 export default Story;
 

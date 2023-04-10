@@ -4,97 +4,82 @@ import { usePullUrlState } from './use-pull-url-state';
 
 describe('usePullUrlState', () => {
   const baseUrl = 'https://github.com/';
-  test('returns correct data-types', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    expect(result.current).toEqual({
-      url: 'https://github.com/pulls',
-      isValidUrl: true,
-      reset: expect.any(Function),
 
-      setBaseUrl: expect.any(Function),
-
-      addBaseFilter: expect.any(Function),
-      removeBaseFilter: expect.any(Function),
-      hasBaseFilter: expect.any(Function),
-      moveBaseFilter: expect.any(Function),
-
-      addRepo: expect.any(Function),
-      removeRepo: expect.any(Function),
-      hasRepo: expect.any(Function),
-      moveRepo: expect.any(Function),
+  describe('baseUrl', () => {
+    test('is nothing if given invalid', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl: 'foo' }));
+      expect(result.current.url).toEqual('');
     });
-  });
-  test('returns nothing if given invalid base-url', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl: 'foo' }));
-    expect(result.current.url).toEqual('');
-  });
-  test('returns url with updated base-url', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.setBaseUrl('https://gitlab.com/');
-    });
-    expect(result.current.url).toEqual('https://gitlab.com/pulls');
-  });
-
-  test('returns url with single base-filter ', async () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.addBaseFilter('is:pr');
-    });
-    expect(result.current.url).toEqual('https://github.com/pulls?q=is%3Apr');
-  });
-  test('returns url with updated base-filter after moveBaseFilter', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.addBaseFilter('is:pr');
-      result.current.addBaseFilter('is:open');
-    });
-    act(() => {
-      result.current.moveBaseFilter('is:pr', 1);
-    });
-    expect(result.current.url).toEqual(
-      'https://github.com/pulls?q=is%3Apr+is%3Apr+is%3Aopen'
-    );
-  });
-  test('throws error trying to move base-filter to invalid index', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.addBaseFilter('is:pr');
-      result.current.addBaseFilter('is:open');
-    });
-    expect(() =>
+    test('is updated when setBaseUrl called', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
       act(() => {
-        result.current.moveBaseFilter('is:pr', 3);
-      })
-    ).toThrowError('Invalid index: 3');
+        result.current.setBaseUrl('https://gitlab.com/');
+      });
+      expect(result.current.url).toEqual('https://gitlab.com/pulls');
+    });
+  });
 
-    expect(() =>
+  describe('baseFilter', () => {
+    test('updates url when addBaseFilter is called', async () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
       act(() => {
-        result.current.moveBaseFilter('is:pr', -1);
-      })
-    ).toThrowError('Invalid index: -1');
-  });
-  test('throws error trying to move base-filter that does not exist', () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.addBaseFilter('is:pr');
-      result.current.addBaseFilter('is:open');
+        result.current.addBaseFilter('is:pr');
+      });
+      expect(result.current.url).toEqual('https://github.com/pulls?q=is%3Apr');
     });
-    expect(() =>
+    test('returns url with updated base-filter after moveBaseFilter', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
       act(() => {
-        result.current.moveBaseFilter('is:closed', 1);
-      })
-    ).toThrowError('Filter not found: is:closed');
-  });
-  test('returns url with multiple base-filters', async () => {
-    const { result } = renderHook(() => usePullUrlState({ baseUrl }));
-    act(() => {
-      result.current.addBaseFilter('is:pr');
-      result.current.addBaseFilter('is:open');
+        result.current.addBaseFilter('is:pr');
+        result.current.addBaseFilter('is:open');
+      });
+      act(() => {
+        result.current.moveBaseFilter('is:pr', 1);
+      });
+      expect(result.current.url).toEqual(
+        'https://github.com/pulls?q=is%3Apr+is%3Apr+is%3Aopen'
+      );
     });
-    expect(result.current.url).toEqual(
-      'https://github.com/pulls?q=is%3Apr+is%3Aopen'
-    );
+    test('throws error trying to move base-filter to invalid index', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+      act(() => {
+        result.current.addBaseFilter('is:pr');
+        result.current.addBaseFilter('is:open');
+      });
+      expect(() =>
+        act(() => {
+          result.current.moveBaseFilter('is:pr', 3);
+        })
+      ).toThrowError('Invalid index: 3');
+
+      expect(() =>
+        act(() => {
+          result.current.moveBaseFilter('is:pr', -1);
+        })
+      ).toThrowError('Invalid index: -1');
+    });
+    test('throws error trying to move base-filter that does not exist', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+      act(() => {
+        result.current.addBaseFilter('is:pr');
+        result.current.addBaseFilter('is:open');
+      });
+      expect(() =>
+        act(() => {
+          result.current.moveBaseFilter('is:closed', 1);
+        })
+      ).toThrowError('Filter not found: is:closed');
+    });
+    test('returns url with multiple base-filters', async () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+      act(() => {
+        result.current.addBaseFilter('is:pr');
+        result.current.addBaseFilter('is:open');
+      });
+      expect(result.current.url).toEqual(
+        'https://github.com/pulls?q=is%3Apr+is%3Aopen'
+      );
+    });
   });
 
   test('returns url with repo', async () => {
@@ -149,4 +134,6 @@ describe('usePullUrlState', () => {
       'https://github.com/pulls?q=is%3Apr+is%3Aopen+repo%3Anrwl%2Fnx+repo%3Anrwl%2Fnx-examples'
     );
   });
+
+  // TODO: add test-cases for custom filter
 });

@@ -2,6 +2,12 @@ import { useCallback, useState } from 'react';
 import { BaseFilter } from '../constants';
 import { isValidRepo, isValidUrl as isValidUrlFunc } from '../utils';
 
+interface UsePullUrlState {
+  baseUrl: string;
+  baseFilters: BaseFilter[];
+  repos: Array<string>;
+  customFilter: string;
+}
 /**
  * Primary hook to manage the URL state for the pull request page.
  *
@@ -11,22 +17,21 @@ import { isValidRepo, isValidUrl as isValidUrlFunc } from '../utils';
  * @param params.baseUrl The initial baseUrl
  */
 export function usePullUrlState(params: { baseUrl: string }) {
-  const [{ baseUrl, baseFilters, repos }, setState] = useState<{
-    baseUrl: string;
-    baseFilters: BaseFilter[];
-    repos: Array<string>;
-  }>({
-    baseUrl: params.baseUrl,
-    baseFilters: [],
-    repos: [],
-  });
+  const [{ baseUrl, baseFilters, repos, customFilter }, setState] =
+    useState<UsePullUrlState>({
+      baseUrl: params.baseUrl,
+      baseFilters: [],
+      repos: [],
+      customFilter: '',
+    });
 
   const reset = useCallback(
-    () =>
+    ({ baseUrl, baseFilters, repos }: UsePullUrlState) =>
       setState({
-        baseUrl: '',
-        baseFilters: [],
-        repos: [],
+        baseUrl: baseUrl ?? '',
+        baseFilters: baseFilters ?? [],
+        repos: repos ?? [],
+        customFilter: '',
       }),
     []
   );
@@ -133,6 +138,19 @@ export function usePullUrlState(params: { baseUrl: string }) {
     },
     [repos]
   );
+  const setCustomFilter = useCallback((customFilter: string) => {
+    setState((state) => ({
+      ...state,
+      customFilter,
+    }));
+  }, []);
+
+  const resetCustomFilter = useCallback(() => {
+    setState((state) => ({
+      ...state,
+      customFilter: '',
+    }));
+  }, []);
 
   const url = (() => {
     if (!isValidUrlFunc(baseUrl)) return '';
@@ -218,5 +236,17 @@ export function usePullUrlState(params: { baseUrl: string }) {
      * Moves the given repo to the new index
      */
     moveRepo,
+    /**
+     * The custom filter string
+     */
+    customFilter,
+    /**
+     * Sets the custom filter string
+     */
+    setCustomFilter,
+    /**
+     * Resets the custom filter string back to an empty string
+     */
+    resetCustomFilter,
   };
 }

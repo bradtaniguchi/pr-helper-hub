@@ -3,7 +3,7 @@ import { MainPage } from './main-page';
 
 const Story: ComponentMeta<typeof MainPage> = {
   component: MainPage,
-  title: 'MainPage',
+  title: 'pages/MainPage',
   decorators: [
     (Story) => (
       <div className="h-screen">

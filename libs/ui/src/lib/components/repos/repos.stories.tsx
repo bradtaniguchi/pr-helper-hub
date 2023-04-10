@@ -3,7 +3,7 @@ import { Repos } from './repos';
 
 const Story: ComponentMeta<typeof Repos> = {
   component: Repos,
-  title: 'Repos',
+  title: 'components/Repos',
 };
 export default Story;
 

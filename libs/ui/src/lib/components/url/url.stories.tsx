@@ -4,7 +4,7 @@ import { Button } from 'flowbite-react';
 
 const Story: ComponentMeta<typeof Url> = {
   component: Url,
-  title: 'Url',
+  title: 'components/Url',
 };
 export default Story;
 
