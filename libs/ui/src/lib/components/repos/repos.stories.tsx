@@ -9,5 +9,15 @@ export default Story;
 
 const Template: ComponentStory<typeof Repos> = (args) => <Repos {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const Empty = Template.bind({});
+Empty.args = {
+  repos: [],
+};
+
+export const WithRepos = Template.bind({});
+WithRepos.args = {
+  repos: [
+    'bradtaniguchi/bradtaniguchi.github.io',
+    'bradtaniguchi/discord-bot-test',
+  ],
+};

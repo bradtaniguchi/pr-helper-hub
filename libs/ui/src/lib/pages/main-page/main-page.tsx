@@ -13,9 +13,11 @@ export interface MainPageProps {}
  * @param props the props of the component
  */
 export function MainPage(props: MainPageProps) {
-  const { url, baseFilters, isValidUrl, ...functions } = usePullUrlState({
-    baseUrl: 'https://github.com/',
-  });
+  const { url, isValidUrl, baseFilters, repos, ...functions } = usePullUrlState(
+    {
+      baseUrl: 'https://github.com/',
+    }
+  );
   return (
     <div className="grid-col-5 grid-row-5 grid gap-2">
       <div className="col-span-5 row-span-1">
@@ -34,7 +36,7 @@ export function MainPage(props: MainPageProps) {
       </div>
 
       <div className="col-span-4 row-span-4">
-        <Repos />
+        <Repos repos={repos} {...functions} />
       </div>
     </div>
   );

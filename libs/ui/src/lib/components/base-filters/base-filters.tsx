@@ -70,10 +70,11 @@ export function BaseFilters(props: BaseFiltersProps) {
   return (
     <Card className="text-white">
       <h1>Base Filters</h1>
-      <p className="text-sm">
+      {/* TODO: this stretches the UI over the 25% marker */}
+      {/* <p className="text-sm">
         This component is a list of base filters that can be toggled on/off.
         These are provided as-is, and are not editable.
-      </p>
+      </p> */}
       <ul className="list-inside list-disc">
         {[...BASE_FILTERS]
           .sort((filterA, filterB) => {
