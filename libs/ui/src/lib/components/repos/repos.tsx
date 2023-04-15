@@ -53,10 +53,10 @@ export function Repos(props: ReposProps) {
   /**
    * If the repo is duplicated in the selected list
    */
-  const isDuplicated = hasRepo(repoValue);
+  const isDuplicated = typeof hasRepo === 'function' && hasRepo(repoValue);
 
   return (
-    <Card className="text-white">
+    <Card className="dark:text-white">
       <h1>Github Repos to track</h1>
       <ul className="list-inside list-disc">
         {(repos ?? []).map((repo) => (

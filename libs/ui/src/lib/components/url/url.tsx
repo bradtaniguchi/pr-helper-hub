@@ -32,7 +32,7 @@ export interface UrlProps {
 export function Url(props: UrlProps) {
   const { url, isValidUrl, actions } = props;
   return (
-    <Card className="text-white">
+    <Card className="dark:text-white">
       <div className="flex justify-center">
         {isValidUrl ? (
           <div className="underline">

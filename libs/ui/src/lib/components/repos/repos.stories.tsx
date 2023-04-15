@@ -20,4 +20,9 @@ WithRepos.args = {
     'bradtaniguchi/bradtaniguchi.github.io',
     'bradtaniguchi/discord-bot-test',
   ],
+  hasRepo: (repo: string) =>
+    [
+      'bradtaniguchi/bradtaniguchi.github.io',
+      'bradtaniguchi/discord-bot-test',
+    ].includes(repo),
 };

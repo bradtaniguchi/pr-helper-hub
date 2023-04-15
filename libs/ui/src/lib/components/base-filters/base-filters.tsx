@@ -68,7 +68,7 @@ export interface BaseFiltersProps {
 export function BaseFilters(props: BaseFiltersProps) {
   const { selected, toggleBaseFilter, customFilter, setCustomFilter } = props;
   return (
-    <Card className="text-white">
+    <Card className="dark:text-white">
       <h1>Base Filters</h1>
       {/* TODO: this stretches the UI over the 25% marker */}
       {/* <p className="text-sm">
