@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { BaseFilter } from '../constants';
+import { BaseFilter, CONVERSE_MAPPING, hasConverseMapping } from '../constants';
 import {
   getInvalidUrlError,
   isValidRepo,
@@ -49,7 +49,19 @@ export function usePullUrlState(params: { baseUrl: string }) {
     (filter: BaseFilter) =>
       setState((state) => ({
         ...state,
-        baseFilters: [...state.baseFilters, filter],
+        baseFilters: (() => {
+          if (filter in CONVERSE_MAPPING) {
+            return [
+              // remove the converse
+              ...state.baseFilters.filter(
+                (el) => el !== (CONVERSE_MAPPING as never)[filter]
+              ),
+              // add the given filter
+              filter,
+            ];
+          }
+          return [...state.baseFilters, filter];
+        })(),
       })),
     []
   );

@@ -70,7 +70,7 @@ describe('usePullUrlState', () => {
         })
       ).toThrowError('Filter not found: is:closed');
     });
-    test('returns url with multiple base-filters', async () => {
+    test('returns url with multiple base-filters', () => {
       const { result } = renderHook(() => usePullUrlState({ baseUrl }));
       act(() => {
         result.current.addBaseFilter('is:pr');
@@ -78,6 +78,25 @@ describe('usePullUrlState', () => {
       });
       expect(result.current.url).toEqual(
         'https://github.com/pulls?q=is%3Apr+is%3Aopen'
+      );
+    });
+
+    test('applies the converse mapping to remove opposites', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+      act(() => {
+        result.current.addBaseFilter('is:pr');
+        result.current.addBaseFilter('is:open');
+      });
+      expect(result.current.url).toEqual(
+        'https://github.com/pulls?q=is%3Apr+is%3Aopen'
+      );
+
+      act(() => {
+        // should remove the open filter
+        result.current.addBaseFilter('is:closed');
+      });
+      expect(result.current.url).toEqual(
+        'https://github.com/pulls?q=is%3Apr+is%3Aclosed'
       );
     });
   });

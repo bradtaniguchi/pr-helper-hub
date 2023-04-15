@@ -35,4 +35,12 @@ export const CONVERSE_MAPPING = {
   'is:closed': 'is:open',
   'is:merged': 'is:unmerged',
   'is:unmerged': 'is:merged',
-};
+} as const;
+
+/**
+ * Returns if the given filter has a converse mapping
+ *
+ * @param filter the filter to check
+ */
+export const hasConverseMapping = (filter: BaseFilter) =>
+  filter in CONVERSE_MAPPING;
