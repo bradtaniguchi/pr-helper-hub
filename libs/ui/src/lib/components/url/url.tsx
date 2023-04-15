@@ -8,10 +8,9 @@ export interface UrlProps {
    */
   url: string;
   /**
-   * If the URL is valid. If not we will show a warning rather than
-   * the URL.
+   * If there is an error with the URL, we will show this error
    */
-  isValidUrl?: boolean;
+  invalidError?: Error;
   /**
    * Array of actions to show in the bottom right of the card
    */
@@ -30,17 +29,22 @@ export interface UrlProps {
  * @param props the component props
  */
 export function Url(props: UrlProps) {
-  const { url, isValidUrl, actions } = props;
+  const { url, invalidError, actions } = props;
   return (
     <Card className="dark:text-white">
       <div className="flex justify-center">
-        {isValidUrl ? (
-          <div className="underline">
-            <Link href={url}>{url}</Link>
+        {invalidError ? (
+          <div>
+            <div>
+              <span className="text-red-500">Invalid URL error:</span>
+            </div>
+            <div className="my-2 text-center">
+              <pre>{invalidError.message}</pre>
+            </div>
           </div>
         ) : (
-          <div>
-            <span className="text-red-500">Invalid URL </span>
+          <div className="underline">
+            <Link href={url}>{url}</Link>
           </div>
         )}
       </div>

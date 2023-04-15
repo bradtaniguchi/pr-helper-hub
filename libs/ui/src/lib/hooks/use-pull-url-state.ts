@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react';
 import { BaseFilter } from '../constants';
-import { isValidRepo, isValidUrl as isValidUrlFunc } from '../utils';
+import {
+  getInvalidUrlError,
+  isValidRepo,
+  isValidUrl as isValidUrlFunc,
+} from '../utils';
 
 interface UsePullUrlState {
   baseUrl: string;
@@ -169,8 +173,8 @@ export function usePullUrlState(params: { baseUrl: string }) {
     return url.toString();
   })();
 
-  const isValidUrl = (() => {
-    return isValidUrlFunc(url);
+  const invalidError = (() => {
+    return getInvalidUrlError(url);
   })();
 
   return {
@@ -179,10 +183,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     url,
     /**
-     * Returns if the url is valid. When a URL is invalid, then
-     * `url` will return an empty string.
+     * Returns the relevant error, if there is one. Used to
+     * display an error message to the user
      */
-    isValidUrl,
+    invalidError,
     /**
      * Reset the state to its initial value.
      */

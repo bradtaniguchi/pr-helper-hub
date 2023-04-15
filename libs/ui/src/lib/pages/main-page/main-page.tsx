@@ -13,17 +13,16 @@ export interface MainPageProps {}
  * @param props the props of the component
  */
 export function MainPage(props: MainPageProps) {
-  const { url, isValidUrl, baseFilters, repos, ...functions } = usePullUrlState(
-    {
+  const { url, invalidError, baseFilters, repos, ...functions } =
+    usePullUrlState({
       baseUrl: 'https://github.com/',
-    }
-  );
+    });
   return (
     <div className="grid-col-5 grid-row-5 grid gap-2">
       <div className="col-span-5 row-span-1">
         <Url
           url={url}
-          isValidUrl={isValidUrl}
+          invalidError={invalidError}
           actions={[
             // TODO: add display logic
             <Button key="1">Delete</Button>,
