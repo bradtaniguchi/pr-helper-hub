@@ -200,6 +200,10 @@ export function usePullUrlState(params: { baseUrl: string }) {
      */
     invalidError,
     /**
+     * The baseURL currently set
+     */
+    baseUrl,
+    /**
      * Reset the state to its initial value.
      */
     reset,
@@ -214,7 +218,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
      *
      * Frozen as to not manipulate elsewhere.
      */
-    baseFilters: (() => Object.freeze(baseFilters) as Array<BaseFilter>)(),
+    baseFilters,
     /**
      * Add a base filter to the query
      */
@@ -241,7 +245,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
      *
      * Frozen as to not manipulate elsewhere.
      */
-    repos: (() => Object.freeze(repos))(),
+    repos,
     /**
      * Add a repo to the query. Will throw an error if the repo name format is invalid.
      */

@@ -48,6 +48,7 @@
     "flowbite-react": "^0.3.5",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
+    "nanoid": "^4.0.2",
     "next": "13.0.0",
     "postcss": "8.4.16",
     "react": "18.2.0",

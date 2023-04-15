@@ -3,5 +3,6 @@ export * from './lib/components/repos/repos';
 export * from './lib/components/url/url';
 export * from './lib/constants';
 export * from './lib/hooks';
+export * from './lib/models/pull-request-url';
 export * from './lib/pages/main-page/main-page';
 export * from './lib/utils/';
