@@ -157,8 +157,15 @@ describe('usePullUrlState', () => {
   });
 
   describe('customFilter', () => {
-    test.todo('is applied as-is');
-    test.todo('');
-    test.todo('is invalid makes the URL not loadable');
+    test('is applied as-is', () => {
+      const { result } = renderHook(() => usePullUrlState({ baseUrl }));
+      act(() => {
+        result.current.setCustomFilter('foo:bar');
+      });
+      expect(result.current.url).toEqual(
+        'https://github.com/pulls?q=foo%3Abar'
+      );
+    });
+    // **note** not really clear on how to mess up URL at this time
   });
 });

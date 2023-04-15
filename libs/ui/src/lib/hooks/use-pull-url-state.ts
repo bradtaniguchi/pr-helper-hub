@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { BaseFilter, CONVERSE_MAPPING, hasConverseMapping } from '../constants';
+import { BaseFilter, CONVERSE_MAPPING } from '../constants';
 import {
   getInvalidUrlError,
   isValidRepo,
