@@ -6,14 +6,23 @@ import { usePullUrlState, useSavedUrlState } from '../../hooks';
 import React, { SyntheticEvent, useCallback } from 'react';
 
 /* eslint-disable-next-line */
-export interface MainPageProps {}
+export interface MainPageProps {
+  /**
+   * Feature flag level to show the load logic. If true we will show the
+   * save/load/delete buttons.
+   */
+  showLoadLogic?: boolean;
+}
 
 /**
  * The main-page is the actual UI page routed and managed by nextjs.
  *
  * @param props the props of the component
+ * @param props.showLoadLogic feature flag level to show the load logic.
+ * If true we will show the save/load/delete buttons.
  */
 export function MainPage(props: MainPageProps) {
+  const { showLoadLogic } = props;
   const {
     url,
     invalidError,
@@ -25,16 +34,19 @@ export function MainPage(props: MainPageProps) {
   } = usePullUrlState({
     baseUrl: 'https://github.com/',
   });
-  const { remove, upsert } = useSavedUrlState({ storageKey: 'PR_HELPER_URLS' });
+  const { selectedUrlId, remove, upsert, hasSaveUrl } = useSavedUrlState({
+    storageKey: 'PR_HELPER_URLS',
+  });
 
   const handleSave = useCallback(() => {
     upsert({
+      id: selectedUrlId,
       baseFilters,
       baseUrl,
       customFilter,
       repos,
     });
-  }, [upsert, baseFilters, baseUrl, customFilter, repos]);
+  }, [upsert, selectedUrlId, baseFilters, baseUrl, customFilter, repos]);
 
   const handleDelete = useCallback(
     (e: SyntheticEvent) => {
@@ -50,15 +62,22 @@ export function MainPage(props: MainPageProps) {
         <Url
           url={url}
           invalidError={invalidError}
-          actions={[
-            // TODO: add display logic
-            <Button key="delete" onClick={handleDelete}>
-              Delete
-            </Button>,
-            <Button key="save" onClick={handleSave}>
-              Save
-            </Button>,
-          ]}
+          actions={
+            showLoadLogic
+              ? [
+                  selectedUrlId && hasSaveUrl(selectedUrlId) && (
+                    <Button key="delete" onClick={handleDelete}>
+                      Delete
+                    </Button>
+                  ),
+                  <Button key="upsert" onClick={handleSave}>
+                    {selectedUrlId && hasSaveUrl(selectedUrlId)
+                      ? 'Update'
+                      : 'Save'}
+                  </Button>,
+                ].filter(Boolean)
+              : []
+          }
         />
       </div>
       <div className="col-span-1 row-span-4">

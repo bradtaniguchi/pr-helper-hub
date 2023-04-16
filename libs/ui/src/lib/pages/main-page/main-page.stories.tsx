@@ -18,5 +18,12 @@ const Template: ComponentStory<typeof MainPage> = (args) => (
   <MainPage {...args} />
 );
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const WithLoadLogic = Template.bind({});
+WithLoadLogic.args = {
+  showLoadLogic: true,
+};
+
+export const WithoutLoadLogic = Template.bind({});
+WithoutLoadLogic.args = {
+  showLoadLogic: false,
+};

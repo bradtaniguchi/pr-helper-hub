@@ -94,6 +94,11 @@ export function useSavedUrlState(params: { storageKey: string }) {
     return savedUrlsMap?.[selectedUrlId ?? ''];
   }, [savedUrlsMap, selectedUrlId]);
 
+  const hasSaveUrl = useCallback(
+    (id: string) => !!savedUrlsMap?.[id],
+    [savedUrlsMap]
+  );
+
   return {
     /**
      * The currently selected url id
@@ -123,6 +128,10 @@ export function useSavedUrlState(params: { storageKey: string }) {
      * Resets all state, and deletes all saved URLs.
      */
     reset,
-    // TODO: maybe add "has" logic
+    /**
+     * Returns if the given url has already been saved. This is denoted by the
+     * URL already having an `id` attribute.
+     */
+    hasSaveUrl,
   };
 }
