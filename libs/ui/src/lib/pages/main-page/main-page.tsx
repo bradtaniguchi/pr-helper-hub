@@ -80,11 +80,11 @@ export function MainPage(props: MainPageProps) {
           }
         />
       </div>
-      <div className="col-span-1 row-span-4">
+      <div className="col-span-5 row-span-4 sm:col-span-1">
         <BaseFilters selected={baseFilters} {...functions} />
       </div>
 
-      <div className="col-span-4 row-span-4">
+      <div className="col-span-5 row-span-4 sm:col-span-4">
         <Repos repos={repos} {...functions} />
       </div>
     </div>
