@@ -1,3 +1,4 @@
+import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { SavedPullRequestUrl } from '../../models/pull-request-url';
 import { getUrlFromState } from '../../utils';
@@ -8,6 +9,10 @@ export interface PrUrlListProps {
    * Callback that is called when the user clicks on the load button.
    */
   onSelect: (prUrlId: string) => void;
+  /**
+   * Callback that is called when the user clicks on the delete button.
+   */
+  onDelete: (prUrlId: string) => void;
   /**
    * The array of selectable PR urls.
    */
@@ -24,7 +29,7 @@ export interface PrUrlListProps {
  * @param props The props of the component
  */
 export function PrUrlList(props: PrUrlListProps) {
-  const { urls } = props;
+  const { urls, onSelect, onDelete } = props;
   if (!urls || urls.length === 0) {
     return (
       <div>
@@ -37,8 +42,9 @@ export function PrUrlList(props: PrUrlListProps) {
       <h1>List of previously saved PRs</h1>
       <ul>
         {(urls ?? [])
-          .map(({ name, baseFilters, baseUrl, customFilter, repos }) => ({
+          .map(({ name, id, baseFilters, baseUrl, customFilter, repos }) => ({
             name,
+            id,
             url: getUrlFromState({
               baseFilters,
               baseUrl,
@@ -46,13 +52,17 @@ export function PrUrlList(props: PrUrlListProps) {
               repos,
             }),
           }))
-          .map(({ name, url }) => (
-            <li key={url}>
+          .map(({ name, id, url }) => (
+            <li key={id} className="my-2 flex w-full flex-row justify-between ">
               <div>
-                <div>{name}</div>
+                <div className="text-lg">{name}</div>
                 <div className="underline">
                   <Link href={url}>{url}</Link>
                 </div>
+              </div>
+              <div className="flex flex-row gap-2">
+                <Button onClick={() => onSelect(id)}>Load</Button>
+                <Button onClick={() => onDelete(id)}>Delete</Button>
               </div>
             </li>
           ))}
