@@ -1,28 +1,17 @@
 import { useCallback, useState } from 'react';
 import { BaseFilter, CONVERSE_MAPPING } from '../constants';
-import {
-  getInvalidUrlError,
-  isValidRepo,
-  isValidUrl as isValidUrlFunc,
-} from '../utils';
+import { getInvalidUrlError, getUrlFromState, isValidRepo } from '../utils';
+import { PullRequestUrl } from '../models/pull-request-url';
 
-interface UsePullUrlState {
-  baseUrl: string;
-  baseFilters: BaseFilter[];
-  repos: Array<string>;
-  customFilter: string;
-}
 /**
  * Primary hook to manage the URL state for the pull request page.
- *
- * TODO: add custom filter
  *
  * @param params The initial state
  * @param params.baseUrl The initial baseUrl
  */
 export function usePullUrlState(params: { baseUrl: string }) {
   const [{ baseUrl, baseFilters, repos, customFilter }, setState] =
-    useState<UsePullUrlState>({
+    useState<PullRequestUrl>({
       baseUrl: params.baseUrl,
       baseFilters: [],
       repos: [],
@@ -30,7 +19,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
     });
 
   const reset = useCallback(
-    ({ baseUrl, baseFilters, repos }: UsePullUrlState) =>
+    ({ baseUrl, baseFilters, repos }: PullRequestUrl) =>
       setState({
         baseUrl: baseUrl ?? '',
         baseFilters: baseFilters ?? [],
@@ -154,6 +143,7 @@ export function usePullUrlState(params: { baseUrl: string }) {
     },
     [repos]
   );
+
   const setCustomFilter = useCallback((customFilter: string) => {
     setState((state) => ({
       ...state,
@@ -168,22 +158,13 @@ export function usePullUrlState(params: { baseUrl: string }) {
     }));
   }, []);
 
-  const url = (() => {
-    if (!isValidUrlFunc(baseUrl)) return '';
-    const url = new URL(baseUrl);
-    url.pathname += 'pulls';
-
-    if (repos.length || baseFilters.length)
-      url.searchParams.set('q', [...baseFilters, ...repos].join(' '));
-
-    if (customFilter)
-      url.searchParams.set(
-        'q',
-        [url.searchParams.get('q'), customFilter].filter(Boolean).join(' ')
-      );
-
-    return url.toString();
-  })();
+  const url = (() =>
+    getUrlFromState({
+      baseFilters,
+      baseUrl,
+      repos,
+      customFilter,
+    }))();
 
   const invalidError = (() => {
     return getInvalidUrlError(url);

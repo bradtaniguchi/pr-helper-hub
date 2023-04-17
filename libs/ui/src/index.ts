@@ -1,3 +1,4 @@
+export * from './lib/components/pr-url-list/pr-url-list';
 export * from './lib/components/base-filters/base-filters';
 export * from './lib/components/repos/repos';
 export * from './lib/components/url/url';
