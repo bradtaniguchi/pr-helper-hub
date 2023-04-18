@@ -204,7 +204,7 @@
             },
             {
               "file": "apps/internal-client/pages/_app.tsx",
-              "hash": "434d8f6bd3bf2f67f5c9fb915db9e3d18feaeb01",
+              "hash": "56e285925e1645ce31cd8b9e67ed163d62ff78d3",
               "deps": [
                 "common-react",
                 "npm:flowbite-react",
@@ -237,12 +237,16 @@
               ]
             },
             {
-              "file": "apps/internal-client/pages/index.tsx",
-              "hash": "97ef1149ddb8da71d92eecb7280d7535657c6e54",
+              "file": "apps/internal-client/pages/about.tsx",
+              "hash": "b488e0463c4a868e01da3cefdd8b433fbfd789f9",
               "deps": [
                 "common-react",
                 "npm:next"
               ]
+            },
+            {
+              "file": "apps/internal-client/pages/index.tsx",
+              "hash": "4f400e28ac0a8ed4b407341639c6f03bcacdd801"
             },
             {
               "file": "apps/internal-client/pages/styles.css",
@@ -753,7 +757,7 @@
             },
             {
               "file": "libs/storybook/.storybook/main.js",
-              "hash": "b274f2bef88b29d7aa5fc0f4b63c1fb83b8aba96"
+              "hash": "2d2ed615013ae0dca224c98ab404019b17b0ff19"
             },
             {
               "file": "libs/storybook/.storybook/preview.js",
@@ -1162,6 +1166,347 @@
             }
           ]
         }
+      },
+      "ui": {
+        "name": "ui",
+        "type": "lib",
+        "data": {
+          "root": "libs/ui",
+          "name": "ui",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/ui/src",
+          "projectType": "library",
+          "tags": [],
+          "targets": {
+            "build": {
+              "executor": "@nrwl/web:rollup",
+              "outputs": [
+                "{options.outputPath}"
+              ],
+              "options": {
+                "outputPath": "dist/libs/ui",
+                "tsConfig": "libs/ui/tsconfig.lib.json",
+                "project": "libs/ui/package.json",
+                "entryFile": "libs/ui/src/index.ts",
+                "external": [
+                  "react/jsx-runtime"
+                ],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "assets": [
+                  {
+                    "glob": "libs/ui/README.md",
+                    "input": ".",
+                    "output": "."
+                  }
+                ]
+              },
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ]
+            },
+            "lint": {
+              "executor": "@nrwl/linter:eslint",
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "options": {
+                "lintFilePatterns": [
+                  "libs/ui/**/*.{ts,tsx,js,jsx}"
+                ]
+              },
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json"
+              ]
+            },
+            "test": {
+              "executor": "@nrwl/jest:jest",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "jestConfig": "libs/ui/jest.config.ts",
+                "passWithNoTests": true
+              },
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ]
+            },
+            "storybook": {
+              "executor": "@nrwl/storybook:storybook",
+              "options": {
+                "uiFramework": "@storybook/react",
+                "port": 4400,
+                "config": {
+                  "configFolder": "libs/ui/.storybook"
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              }
+            },
+            "build-storybook": {
+              "executor": "@nrwl/storybook:build",
+              "outputs": [
+                "{options.outputPath}"
+              ],
+              "options": {
+                "uiFramework": "@storybook/react",
+                "outputPath": "dist/storybook/ui",
+                "config": {
+                  "configFolder": "libs/ui/.storybook"
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/.storybook/**/*"
+              ]
+            },
+            "typedoc": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npx typedoc --options libs/ui/typedoc.js"
+              }
+            }
+          },
+          "files": [
+            {
+              "file": "libs/ui/.babelrc",
+              "hash": "ccae900be42788285eb6e1b3a2af4b81f56f14fe"
+            },
+            {
+              "file": "libs/ui/.eslintrc.json",
+              "hash": "734ddaceea447738208c9519158ad6b3062f3929"
+            },
+            {
+              "file": "libs/ui/.storybook/main.js",
+              "hash": "42e656dcafeb6ecc39e8a512730eed17d1c4c612"
+            },
+            {
+              "file": "libs/ui/.storybook/preview.js",
+              "hash": "8c8889d1a414d3f6aac36db631cb19fab5756751"
+            },
+            {
+              "file": "libs/ui/.storybook/tailwind-imports.css",
+              "hash": "b5c61c956711f981a41e95f7fcf0038436cfbb22"
+            },
+            {
+              "file": "libs/ui/.storybook/tsconfig.json",
+              "hash": "601ae8ff8badf6d62653645f3a6f33a425536efa"
+            },
+            {
+              "file": "libs/ui/jest.config.ts",
+              "hash": "c3ff9820cff2c448ec496960685f2ceac2e23340"
+            },
+            {
+              "file": "libs/ui/package.json",
+              "hash": "6fb5d0179b7ceebb45544f3255f3ad36e9b2c68e"
+            },
+            {
+              "file": "libs/ui/postcss.config.js",
+              "hash": "2d6ed243d22b23395afa1833e840071c1ed4c935"
+            },
+            {
+              "file": "libs/ui/project.json",
+              "hash": "83beffeec521546237ff81e2b63c31dfa104fd38"
+            },
+            {
+              "file": "libs/ui/README.md",
+              "hash": "c17d42c3eb3872082064bb40866af23fb72082b8"
+            },
+            {
+              "file": "libs/ui/src/index.ts",
+              "hash": "1ef94b3ee8f20a18665602c6783ca0fa5050da5e"
+            },
+            {
+              "file": "libs/ui/src/lib/components/base-filters/base-filters.stories.tsx",
+              "hash": "b80e4b7664da0b30ee1fa5bb2f086e0686fe635a",
+              "deps": [
+                "npm:@storybook/react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/base-filters/base-filters.tsx",
+              "hash": "757a63799865071d48b78a794c6beec4745e8613",
+              "deps": [
+                "npm:flowbite-react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/pr-url-list/pr-url-list.stories.tsx",
+              "hash": "d5f67409913db173d467b31803ebaab6b6ae7e8b",
+              "deps": [
+                "npm:@storybook/react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/pr-url-list/pr-url-list.tsx",
+              "hash": "936a9cf100bb59efc433b54fe1f5e9222ec09bf4",
+              "deps": [
+                "npm:flowbite-react",
+                "npm:next"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/repos/repos.stories.tsx",
+              "hash": "3edf4e459c6e8917a1f65ce77682327688d11cf5",
+              "deps": [
+                "npm:@storybook/react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/repos/repos.tsx",
+              "hash": "23892542bc128435767841de6dd20f02d0df4865",
+              "deps": [
+                "npm:flowbite-react",
+                "npm:react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/url/url.stories.tsx",
+              "hash": "8e6fbb7eb9858cd402e7bf2c3642fac022c5efc7",
+              "deps": [
+                "npm:@storybook/react",
+                "npm:flowbite-react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/components/url/url.tsx",
+              "hash": "c28aae34f159f2b08580e94d7db476da6719c924",
+              "deps": [
+                "npm:flowbite-react",
+                "npm:next"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/constants/base-filters.ts",
+              "hash": "83bbdd01db804126713568a345b0ea162d1a808f"
+            },
+            {
+              "file": "libs/ui/src/lib/constants/index.ts",
+              "hash": "11b7481775f75c243b89c280af7064e409831c5e"
+            },
+            {
+              "file": "libs/ui/src/lib/hooks/.gitkeep",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "libs/ui/src/lib/hooks/index.ts",
+              "hash": "52d51684ee22f9f9b47ee60b89a9c53b3fc69f4c"
+            },
+            {
+              "file": "libs/ui/src/lib/hooks/use-pull-url-state.spec.ts",
+              "hash": "4400afe32000b6e9a0eaf85b0ba1f102fb1e70d3",
+              "deps": [
+                "npm:@testing-library/react",
+                "npm:react-dom"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/hooks/use-pull-url-state.ts",
+              "hash": "7771e1c686ee8e4d0dc9d33cf71f39df1815ff4d",
+              "deps": [
+                "npm:react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/hooks/use-saved-url-state.ts",
+              "hash": "3629338d9980a6e1d99a9114bc3d4c7b48907e93",
+              "deps": [
+                "npm:nanoid",
+                "npm:react",
+                "npm:react-use"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/models/pull-request-url.ts",
+              "hash": "ab63cd213a55f52fbc8093fae658dad0a4b69d5e"
+            },
+            {
+              "file": "libs/ui/src/lib/pages/main-page/main-page.stories.tsx",
+              "hash": "eb23cb918bf3510edf43f722c077c77409daf1cc",
+              "deps": [
+                "npm:@storybook/react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/pages/main-page/main-page.tsx",
+              "hash": "37a84a7354104f94eb33a820e16bee5e9d4aad3a",
+              "deps": [
+                "npm:flowbite-react",
+                "npm:react"
+              ]
+            },
+            {
+              "file": "libs/ui/src/lib/utils/.gitkeep",
+              "hash": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/get-url-from-state.ts",
+              "hash": "391e8368a9bf5e642773ac3534e53a212aff9739"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/index.ts",
+              "hash": "054ae8bc70dc028de8246a122d594c549257a534"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/is-valid-repo.spec.ts",
+              "hash": "1632d73bb60c369fc70786740bfac23f55a4fdd2"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/is-valid-repo.ts",
+              "hash": "8066684eb8f24f25ade57626e5c8fb5bf0c09188"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/is-valid-url.spec.ts",
+              "hash": "70a94e9c49317e7e8030a44f1ca961f6af3eded4"
+            },
+            {
+              "file": "libs/ui/src/lib/utils/is-valid-url.ts",
+              "hash": "0648a2401d774af1fa9d471051996cdcd64d1e82"
+            },
+            {
+              "file": "libs/ui/tailwind.config.js",
+              "hash": "16c52d11fb862c82fee9c05c2e9c5baf97f007cb",
+              "deps": [
+                "npm:@nrwl/react",
+                "npm:flowbite",
+                "npm:@tailwindcss/typography"
+              ]
+            },
+            {
+              "file": "libs/ui/tsconfig.json",
+              "hash": "9fff9cc2db0cca15bc96bf1cde3e27146d3922f2"
+            },
+            {
+              "file": "libs/ui/tsconfig.lib.json",
+              "hash": "2e54c51309bc084f59acb6b55604a4803b3fb238"
+            },
+            {
+              "file": "libs/ui/tsconfig.spec.json",
+              "hash": "ff08addd60ff581234ec9423d2bb90f31d8166e8"
+            },
+            {
+              "file": "libs/ui/typedoc.js",
+              "hash": "d7b2e02d454f09934145680767fa12781726cdcc"
+            }
+          ]
+        }
       }
     },
     "dependencies": {
@@ -1186,7 +1531,8 @@
       ],
       "storybook": [],
       "plugins": [],
-      "common": []
+      "common": [],
+      "ui": []
     }
   },
   "affectedProjects": [],
