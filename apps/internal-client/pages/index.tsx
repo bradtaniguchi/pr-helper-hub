@@ -1,3 +1,4 @@
+import { MainPage } from '@pr-helper-hub/ui';
 /* eslint-disable-next-line */
 export interface IndexProps {}
 
@@ -11,7 +12,7 @@ export interface IndexProps {}
 export function Index(props: IndexProps) {
   return (
     <div>
-      <h1>Welcome to Index!</h1>
+      <MainPage />
     </div>
   );
 }
