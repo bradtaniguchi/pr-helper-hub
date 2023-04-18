@@ -6,6 +6,7 @@
     "common-react": "libs/common-react",
     "internal-client": "apps/internal-client",
     "plugins": "libs/plugins",
-    "storybook": "libs/storybook"
+    "storybook": "libs/storybook",
+    "ui": "libs/ui"
   }
 }

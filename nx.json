@@ -28,7 +28,9 @@
         "e2eTestRunner": "none"
       },
       "component": {
-        "style": "scss"
+        "style": "none",
+        "skipTests": true,
+        "export": true
       },
       "library": {
         "linter": "eslint",

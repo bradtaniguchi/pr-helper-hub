@@ -18,7 +18,8 @@
       "@pr-helper-hub/common": ["libs/common/src/index.ts"],
       "@pr-helper-hub/common-react": ["libs/common-react/src/index.ts"],
       "@pr-helper-hub/plugins": ["libs/plugins/src/index.ts"],
-      "@pr-helper-hub/storybook": ["libs/storybook/src/index.ts"]
+      "@pr-helper-hub/storybook": ["libs/storybook/src/index.ts"],
+      "@pr-helper-hub/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
