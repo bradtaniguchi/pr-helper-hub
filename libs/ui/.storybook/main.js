@@ -1,5 +1,8 @@
 const rootMain = require('../../../.storybook/main');
 
+/**
+ * @type {import('@storybook/core-common').StorybookConfig}
+ */
 module.exports = {
   ...rootMain,
 
@@ -20,15 +23,5 @@ module.exports = {
     // add your own webpack tweaks if needed
 
     return config;
-  },
-  refs: {
-    'common-react': {
-      title: 'common-react',
-      url: 'common-react/',
-    },
-    ui: {
-      title: 'ui',
-      url: 'ui/',
-    },
   },
 };
